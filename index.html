@@ -2,7 +2,7 @@
 <html>
 <body>
 
-<h2>Enable Vitamin Reminder</h2>
+<h2>Vitamin Reminder</h2>
 
 <button onclick="subscribe()">Enable Notifications</button>
 
@@ -12,15 +12,29 @@
 
 async function subscribe() {
 
-  const reg = await navigator.serviceWorker.register("sw.js")
+  try {
 
-  const sub = await reg.pushManager.subscribe({
-      userVisibleOnly: true,
-      applicationServerKey: "PASTE_PUBLIC_KEY_HERE"
-  })
+    if (!('serviceWorker' in navigator)) {
+        document.getElementById("output").textContent =
+        "Service worker not supported";
+        return;
+    }
 
-  document.getElementById("output").textContent =
-      JSON.stringify(sub, null, 2)
+    const reg = await navigator.serviceWorker.register("sw.js")
+
+    const sub = await reg.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: "PASTE_PUBLIC_KEY_HERE"
+    })
+
+    document.getElementById("output").textContent =
+        JSON.stringify(sub, null, 2)
+
+  } catch(e) {
+
+    document.getElementById("output").textContent = e
+
+  }
 
 }
 
