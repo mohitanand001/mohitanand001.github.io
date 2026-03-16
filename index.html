@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Enable Vitamin Reminder</h2>
+
+<button onclick="subscribe()">Enable Notifications</button>
+
+<pre id="output"></pre>
+
+<script>
+
+async function subscribe() {
+
+  const reg = await navigator.serviceWorker.register("sw.js")
+
+  const sub = await reg.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: "PASTE_PUBLIC_KEY_HERE"
+  })
+
+  document.getElementById("output").textContent =
+      JSON.stringify(sub, null, 2)
+
+}
+
+</script>
+
+</body>
+</html>
